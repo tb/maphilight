@@ -144,9 +144,9 @@
 		};
 		add_shape_to = function(canvas, shape, coords, options, name) {
 			var fill, stroke, opacity, e;
-			fill = '<v:fill color="#'+options.fillColor+'" opacity="'+(options.fill ? options.fillOpacity : 0)+'" />';
+			fill = '<v:fill color="#'+options.fillColor+'" opacity="'+(options.fill ? get_opacity(options, 'fill') : 0)+'" />';
 			stroke = (options.stroke ? 'strokeweight="'+options.strokeWidth+'" stroked="t" strokecolor="#'+options.strokeColor+'"' : 'stroked="f"');
-			opacity = '<v:stroke opacity="'+options.strokeOpacity+'"/>';
+			opacity = '<v:stroke opacity="'+get_opacity(options, 'stroke')+'"/>';
 			if(shape == 'rect') {
 				e = $('<v:rect name="'+name+'" filled="t" '+stroke+' style="zoom:1;margin:0;padding:0;display:block;position:absolute;left:'+coords[0]+'px;top:'+coords[1]+'px;width:'+(coords[2] - coords[0])+'px;height:'+(coords[3] - coords[1])+'px;"></v:rect>');
 			} else if(shape == 'poly') {
