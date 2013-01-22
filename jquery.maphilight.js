@@ -4,6 +4,10 @@
 
 	has_canvas = !!document.createElement('canvas').getContext;
 
+    var get_opacity = function(options, type) {
+      return options.highlighted ? options.highlightedOpacity : options[type+'Opacity'];
+    }
+
 	// VML: more complex
 	has_VML = (function() {
 		var a = document.createElement('div');
@@ -51,7 +55,6 @@
 		}
 		add_shape_to = function(canvas, shape, coords, options, name) {
 			var i, context = canvas.getContext('2d');
-			
 			// Because I don't want to worry about setting things back to a base state
 			
 			// Shadow has to happen first, since it's on the bottom, and it does some clip /
@@ -115,13 +118,13 @@
 			// fill has to come after shadow, otherwise the shadow will be drawn over the fill,
 			// which mostly looks weird when the shadow has a high opacity
 			if(options.fill) {
-				context.fillStyle = css3color(options.fillColor, options.fillOpacity);
+				context.fillStyle = css3color(options.fillColor, get_opacity(options, 'fill'));
 				context.fill();
 			}
 			// Likewise, stroke has to come at the very end, or it'll wind up under bits of the
 			// shadow or the shadow-background if it's present.
 			if(options.stroke) {
-				context.strokeStyle = css3color(options.strokeColor, options.strokeOpacity);
+				context.strokeStyle = css3color(options.strokeColor, get_opacity(options, 'stroke'));
 				context.lineWidth = options.strokeWidth;
 				context.stroke();
 			}
@@ -308,7 +311,7 @@
 				$(map).find('area[coords]').each(function() {
 					var shape, area_options;
 					area_options = options_from_area(this, options);
-					if(area_options.alwaysOn) {
+					if(area_options.alwaysOn || area_options.highlighted) {
 						if(!canvas_always && has_canvas) {
 							canvas_always = create_canvas_for(img[0]);
 							$(canvas_always).css(canvas_style);
@@ -330,7 +333,7 @@
 			$(map).trigger('alwaysOn.maphilight').find('area[coords]')
 				.bind('mouseover.maphilight', mouseover)
 				.bind('mouseout.maphilight', function(e) { clear_canvas(canvas); });
-			
+
 			img.before(canvas); // if we put this after, the mouseover events wouldn't fire.
 			
 			img.addClass('maphilighted');

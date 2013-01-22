@@ -14,7 +14,8 @@
         }
     ],
     "dependencies": {
-        "jquery": "1"
+        "jquery": "1",
+        "grunt": "~0.4.0"
     },
     "description": "a plugin that adds visual hilights to image maps",
     "keywords": [
