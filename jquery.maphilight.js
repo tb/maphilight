@@ -56,6 +56,9 @@
 		add_shape_to = function(canvas, shape, coords, options, name) {
 			var i, context = canvas.getContext('2d');
 			// Because I don't want to worry about setting things back to a base state
+
+            // Use highlighted only for initial rendering and not in mouseover
+            options.highlighted = options.highlighted && (name != 'highlighted');
 			
 			// Shadow has to happen first, since it's on the bottom, and it does some clip /
 			// fill operations which would interfere with what comes next.
